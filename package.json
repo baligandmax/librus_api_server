@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
-    "librus-api": "file:./api" 
+    "librus-api": "^2.15.0"
   }
 }
