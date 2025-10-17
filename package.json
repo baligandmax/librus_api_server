@@ -1,0 +1,8 @@
+{
+  "name": "librus-api-server",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "librus-api": "^1.0.8"
+  }
+}
