@@ -1,7 +1,8 @@
 import Librus from "librus-api";
 
 export default async function handler(req, res) {
-  const { username, password } = req.query;
+  const username = process.env.LIBRUS_USERNAME;
+  const password = process.env.LIBRUS_PASSWORD;
 
   if (!username || !password) {
     return res.status(400).json({ error: "Username et password requis." });
@@ -17,8 +18,6 @@ export default async function handler(req, res) {
     const absences = await client.absence.getAbsences();
     const timetable = await client.calendar.getTimetable();
     const subjects = await client.homework.listSubjects();
-    const luckyNumber = await client.info.getLuckyNumber();
-    const notifications = await client.info.getNotifications();
 
     const allHomework = [];
 
@@ -29,7 +28,9 @@ export default async function handler(req, res) {
           if (homework && homework.length > 0) {
             allHomework.push(...homework);
           }
-        } catch (e) {}
+        } catch (e) {
+          console.error("Erreur récup. devoirs:", e.message);
+        }
       }
     }
 
@@ -39,10 +40,9 @@ export default async function handler(req, res) {
       absences,
       timetable,
       homework: allHomework,
-      luckyNumber,
-      notifications,
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Erreur Librus:", error.message);
+    res.status(500).json({ error: "Impossible de récupérer les données Librus." });
   }
 }
