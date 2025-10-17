@@ -9,40 +9,17 @@ export default async function handler(req, res) {
   }
 
   const client = new Librus();
-
   try {
     await client.authorize(username, password);
-
-    const account = await client.info.getAccountInfo();
     const grades = await client.info.getGrades();
     const absences = await client.absence.getAbsences();
-    const timetable = await client.calendar.getTimetable();
-    const subjects = await client.homework.listSubjects();
-
-    const allHomework = [];
-
-    if (subjects && subjects.length > 0) {
-      for (const subject of subjects) {
-        try {
-          const homework = await client.homework.listHomework(subject.id);
-          if (homework && homework.length > 0) {
-            allHomework.push(...homework);
-          }
-        } catch (e) {
-          console.error("Erreur récup. devoirs:", e.message);
-        }
-      }
-    }
-
     return res.status(200).json({
-      account,
+      success: true,
       grades,
-      absences,
-      timetable,
-      homework: allHomework,
+      absences
     });
   } catch (error) {
     console.error("Erreur Librus:", error.message);
-    res.status(500).json({ error: "Impossible de récupérer les données Librus." });
+    return res.status(500).json({ error: `Impossible de récupérer les données: ${error.message}` });
   }
 }
