@@ -10,22 +10,31 @@ export default async function handler(req, res) {
 
   const client = new Librus({
     headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
       'Accept-Encoding': 'gzip, deflate, br',
-      'Connection': 'keep-alive'
+      'Accept-Language': 'en-US,en;q=0.9',
+      'Connection': 'keep-alive',
+      'Upgrade-Insecure-Requests': '1'
     },
-    timeout: 15000 // 15s timeout
+    timeout: 20000 // 20s timeout
   });
 
   try {
     console.log("Tentative de connexion à Synergia...");
     await client.authorize(username, password);
     console.log("Connexion réussie !");
+
+    // Tester getGrades séparément
+    console.log("Récupération des notes...");
     const grades = await client.info.getGrades();
     console.log("Notes récupérées:", grades.length);
+
+    // Tester getAbsences séparément
+    console.log("Récupération des absences...");
     const absences = await client.absence.getAbsences();
     console.log("Absences récupérées:", absences.length);
+
     return res.status(200).json({
       success: true,
       grades,
