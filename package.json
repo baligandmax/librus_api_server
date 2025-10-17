@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
-    "librus-api": "github:baligandmax/librus-api#main"
+   "librus-api": "https://github.com/baligandmax/librus-api.git"
   }
 }
