@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
-  https://github.com/baligandmax/librus_api_server/
+    "librus-api": "file:./api" 
   }
 }
